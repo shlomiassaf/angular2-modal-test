@@ -1,9 +1,7 @@
-import { AfterContentInit, Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MdSidenav } from '@angular/material';
+import { Component, ViewEncapsulation } from '@angular/core';
 
-import { views } from './app-nav-views';
-import { MOBILE } from './services/constants';
+import { Modal, BSModalContextBuilder } from 'angular2-modal/plugins/bootstrap';
+
 
 @Component({
   selector: 'my-app',
@@ -11,28 +9,26 @@ import { MOBILE } from './services/constants';
   templateUrl: './app.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements AfterContentInit {
-  showMonitor = (ENV === 'development' &&
-    ['monitor', 'both'].includes(STORE_DEV_TOOLS) // set in constants.js file in project root
-  );
-  mobile = MOBILE;
-  sideNavMode = MOBILE ? 'over' : 'side';
-  views = views;
-  @ViewChild(MdSidenav) sidenav: MdSidenav;
+export class AppComponent  {
+  constructor( public modal: Modal ) { }
 
-  constructor(
-    public route: ActivatedRoute,
-    public router: Router
-  ) { }
-
-  ngAfterContentInit() {
-    if (HMR) {
-      this.sidenav.open();
-    } else if (!MOBILE) {
-      setTimeout(() => {
-        this.sidenav.open();
-      });
-    }
+  onClick() {
+    this.modal.alert()
+      .size('lg')
+      .showClose(true)
+      .title('A simple Alert style modal window')
+      .body(`
+            <h4>Alert is a classic (title/body/footer) 1 button modal window that 
+            does not block.</h4>
+            <b>Configuration:</b>
+            <ul>
+                <li>Non blocking (click anywhere outside to dismiss)</li>
+                <li>Size large</li>
+                <li>Dismissed with default keyboard key (ESC)</li>
+                <li>Close wth button click</li>
+                <li>HTML content</li>
+            </ul>`)
+      .open();
   }
 
   activateEvent(event) {

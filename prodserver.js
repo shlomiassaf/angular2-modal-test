@@ -18,7 +18,7 @@ const renderIndex = (req, res) => {
 
 app.get('/*', renderIndex);
 
-let e2e;
+var e2e;
 const ENV = process.env.npm_lifecycle_event;
 if (ENV === 'e2e:server') { e2e = E2E_PORT };
 const PORT = e2e || PROD_PORT;
